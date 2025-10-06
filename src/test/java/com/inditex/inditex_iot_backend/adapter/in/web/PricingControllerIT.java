@@ -82,4 +82,13 @@ class PricingControllerIT {
                 .andExpect(jsonPath("$.priceList").value(4))
                 .andExpect(jsonPath("$.price").value(38.95));
     }
+
+    @Test
+    void shouldReturn404WhenNoApplicablePrice() throws Exception {
+        mockMvc.perform(get("/prices")
+                .param("brandId", "1")
+                .param("productId", "35455")
+                .param("applicationDate", "2019-01-01T00:00:00"))
+                .andExpect(status().isNotFound());
+    }
 }
