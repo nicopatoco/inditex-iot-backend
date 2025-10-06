@@ -13,10 +13,13 @@ import java.util.Optional;
 public class PriceSelector {
 
     public Optional<Price> select(List<Price> candidates) {
+        if (candidates == null || candidates.isEmpty()) {
+            return Optional.empty();
+        }
+
         return candidates.stream()
-                .sorted(Comparator
-                        .comparingInt(Price::getPriority).reversed()
-                        .thenComparing(Price::getStartDate).reversed())
-                .findFirst();
+                .max(Comparator
+                        .comparingInt(Price::getPriority)
+                        .thenComparing(Price::getStartDate));
     }
 }
