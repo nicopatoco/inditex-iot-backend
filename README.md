@@ -36,6 +36,11 @@ PricingController  →  GetApplicablePriceUseCase (Puerto IN)
 1. Se elige la tarifa con **mayor `priority`**.
 2. En empate, la de **`startDate` más reciente**.
 
+### Nota de modelado
+
+En persistencia `PRICES.brand_id` es FK a `BRAND` mediante `@ManyToOne`.  
+En DOMINIO mantenemos **`brandId` (int)** para no acoplar el dominio a JPA (principio hexagonal).
+
 ---
 
 ## Estructura del proyecto
@@ -49,6 +54,7 @@ src/main/java/com/inditex/inditex_iot_backend
 │  │  ├─ dto/PriceResponse.java
 │  │  └─ mapper/PriceDtoMapper.java
 │  └─ out/persistence
+│     ├─ BrandJpaEntity.java
 │     ├─ PriceJpaEntity.java
 │     ├─ JpaPriceRepository.java
 │     └─ PricePersistenceAdapter.java
@@ -128,12 +134,41 @@ curl "http://localhost:8080/prices?brandId=1&productId=35455&applicationDate=202
 **404 Not Found**: no hay tarifa aplicable.  
 **400 Bad Request**: parámetros inválidos (respuesta en **Problem Details**, RFC 7807).
 
+#### Ejemplos de errores (Problem Details)
+
+**400 Bad Request**
+
+```json
+{
+  "type": "about:blank",
+  "title": "Bad Request",
+  "status": 400,
+  "detail": "applicationDate must be ISO-8601, e.g. 2020-06-14T16:00:00",
+  "instance": "/prices"
+}
+```
+
+**404 Not Found**
+
+```json
+{
+  "type": "about:blank",
+  "title": "Not Found",
+  "status": 404,
+  "detail": "No applicable price for brandId=1, productId=35455 at 2020-06-13T21:00:00",
+  "instance": "/prices"
+}
+```
+
 ---
 
 ## Swagger / OpenAPI
 
 - **Swagger UI:** `http://localhost:8080/swagger-ui/index.html`
 - **OpenAPI JSON:** `http://localhost:8080/v3/api-docs`
+
+> **Nota:** con Spring Boot 3.5.x se usa `springdoc-openapi 2.8.13`.  
+> Versiones anteriores de springdoc pueden lanzar `NoSuchMethodError` en `ControllerAdviceBean`.
 
 ---
 
@@ -240,3 +275,13 @@ Incluye:
 - Dockerfile + docker-compose.
 - Integración con Kafka (producer/consumer) para eventos de pricing.
 - Autenticación/Autorización (Spring Security) si se expone públicamente.
+
+---
+
+## Quickstart Java 17 (macOS/Homebrew)
+
+```bash
+brew install --cask temurin@17
+export JAVA_HOME=$(/usr/libexec/java_home -v 17)
+java -version
+```
