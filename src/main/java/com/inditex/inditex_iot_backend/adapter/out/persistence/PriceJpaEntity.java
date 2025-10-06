@@ -15,8 +15,9 @@ public class PriceJpaEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "brand_id", nullable = false)
-    private Integer brandId;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "brand_id", nullable = false, foreignKey = @ForeignKey(name = "fk_price_brand"))
+    private BrandJpaEntity brand;
 
     @Column(name = "product_id", nullable = false)
     private Long productId;
@@ -44,12 +45,12 @@ public class PriceJpaEntity {
         return id;
     }
 
-    public Integer getBrandId() {
-        return brandId;
+    public BrandJpaEntity getBrand() {
+        return brand;
     }
 
-    public void setBrandId(Integer brandId) {
-        this.brandId = brandId;
+    public void setBrand(BrandJpaEntity brand) {
+        this.brand = brand;
     }
 
     public Long getProductId() {
@@ -106,5 +107,23 @@ public class PriceJpaEntity {
 
     public void setEndDate(LocalDateTime endDate) {
         this.endDate = endDate;
+    }
+
+    // equals & hashCode
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null)
+            return false;
+        if (getClass() != o.getClass())
+            return false; // sencillo; si usás muchos proxies, ver nota abajo
+        PriceJpaEntity that = (PriceJpaEntity) o;
+        return id != null && id.equals(that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
     }
 }

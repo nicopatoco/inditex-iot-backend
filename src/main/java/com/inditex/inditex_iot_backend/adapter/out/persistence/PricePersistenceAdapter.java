@@ -23,7 +23,7 @@ public class PricePersistenceAdapter implements LoadPricesPort {
                 .stream()
                 .findFirst()
                 .map(e -> new Price(
-                        e.getBrandId(),
+                        e.getBrand().getId(),
                         e.getProductId(),
                         e.getPriceList(),
                         e.getPriority(),
