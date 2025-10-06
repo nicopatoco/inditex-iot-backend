@@ -2,6 +2,7 @@ package com.inditex.inditex_iot_backend.adapter.out.persistence;
 
 import com.inditex.inditex_iot_backend.domain.model.Price;
 import com.inditex.inditex_iot_backend.domain.port.out.LoadPricesPort;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -18,8 +19,9 @@ public class PricePersistenceAdapter implements LoadPricesPort {
 
     @Override
     public List<Price> loadPrices(int brandId, long productId, LocalDateTime applicationDate) {
-        return repo.findApplicable(brandId, productId, applicationDate)
+        return repo.findApplicable(brandId, productId, applicationDate, PageRequest.of(0, 1))
                 .stream()
+                .findFirst()
                 .map(e -> new Price(
                         e.getBrandId(),
                         e.getProductId(),
@@ -29,6 +31,7 @@ public class PricePersistenceAdapter implements LoadPricesPort {
                         e.getCurr(),
                         e.getStartDate(),
                         e.getEndDate()))
-                .toList();
+                .map(List::of)
+                .orElseGet(List::of);
     }
 }
