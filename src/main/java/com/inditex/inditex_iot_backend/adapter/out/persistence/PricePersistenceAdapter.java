@@ -19,6 +19,7 @@ public class PricePersistenceAdapter implements LoadPricesPort {
 
     @Override
     public List<Price> loadPrices(int brandId, long productId, LocalDateTime applicationDate) {
+        // this line ensures that the query only brings the most prioritary record
         return repo.findApplicable(brandId, productId, applicationDate, PageRequest.of(0, 1))
                 .stream()
                 .findFirst()

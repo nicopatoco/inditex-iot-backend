@@ -12,6 +12,7 @@ public interface JpaPriceRepository extends JpaRepository<PriceJpaEntity, Long> 
 
   @Query("""
           select p from PriceJpaEntity p
+          join fetch p.brand
           where p.brand.id = :brandId
             and p.productId = :productId
             and :when between p.startDate and p.endDate
