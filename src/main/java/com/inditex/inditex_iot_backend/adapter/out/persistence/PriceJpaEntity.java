@@ -6,9 +6,8 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "prices", indexes = {
-        @Index(name = "ix_brand_product", columnList = "brand_id, product_id"),
-        @Index(name = "ix_dates", columnList = "start_date, end_date"),
-        @Index(name = "ix_priority", columnList = "priority")
+        // Optimized index for filter and sorting
+        @Index(name = "ix_aplicable_price", columnList = "brand_id, product_id, start_date, end_date, priority desc, price_list desc")
 })
 public class PriceJpaEntity {
     @Id
