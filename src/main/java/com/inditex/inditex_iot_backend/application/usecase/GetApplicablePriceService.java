@@ -8,24 +8,20 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.inditex.inditex_iot_backend.domain.model.Price;
 import com.inditex.inditex_iot_backend.domain.port.in.GetApplicablePriceUseCase;
-import com.inditex.inditex_iot_backend.domain.port.out.LoadPricesPort;
-import com.inditex.inditex_iot_backend.domain.service.PriceSelector;
+import com.inditex.inditex_iot_backend.domain.port.out.LoadPricePort;
 
 @Service
 public class GetApplicablePriceService implements GetApplicablePriceUseCase {
 
-    private final LoadPricesPort loadPricesPort;
-    private final PriceSelector selector;
+    private final LoadPricePort loadPricePort;
 
-    public GetApplicablePriceService(LoadPricesPort loadPricesPort, PriceSelector selector) {
-        this.loadPricesPort = loadPricesPort;
-        this.selector = selector;
+    public GetApplicablePriceService(LoadPricePort loadPricePort) {
+        this.loadPricePort = loadPricePort;
     }
 
     @Override
     @Transactional(readOnly = true)
     public Optional<Price> getApplicablePrice(int brandId, long productId, LocalDateTime applicationDate) {
-        var candidates = loadPricesPort.loadPrices(brandId, productId, applicationDate);
-        return selector.select(candidates);
+        return loadPricePort.loadPrice(brandId, productId, applicationDate);
     }
 }
