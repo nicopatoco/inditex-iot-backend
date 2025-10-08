@@ -5,7 +5,7 @@ import com.inditex.inditex_iot_backend.domain.model.Price;
 import org.springframework.stereotype.Component;
 
 @Component
-public class PriceDtoMapper {
+public class PriceDtoMapper implements PriceResponseMapper {
     public PriceResponse toResponse(Price p) {
         return new PriceResponse(
                 p.getProductId(),

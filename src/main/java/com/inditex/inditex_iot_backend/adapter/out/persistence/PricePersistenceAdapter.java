@@ -1,38 +1,32 @@
 package com.inditex.inditex_iot_backend.adapter.out.persistence;
 
-import com.inditex.inditex_iot_backend.domain.model.Price;
-import com.inditex.inditex_iot_backend.domain.port.out.LoadPricesPort;
+import java.time.LocalDateTime;
+import java.util.Optional;
+
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
-import java.util.List;
+import com.inditex.inditex_iot_backend.adapter.out.persistence.mapper.EntityToDomainMapper;
+import com.inditex.inditex_iot_backend.domain.model.Price;
+import com.inditex.inditex_iot_backend.domain.port.out.LoadPricePort;
 
 @Component
-public class PricePersistenceAdapter implements LoadPricesPort {
+public class PricePersistenceAdapter implements LoadPricePort {
 
     private final JpaPriceRepository repo;
+    private final EntityToDomainMapper mapper;
 
-    public PricePersistenceAdapter(JpaPriceRepository repo) {
+    public PricePersistenceAdapter(JpaPriceRepository repo, EntityToDomainMapper mapper) {
         this.repo = repo;
+        this.mapper = mapper;
     }
 
     @Override
-    public List<Price> loadPrices(int brandId, long productId, LocalDateTime applicationDate) {
-        // this line ensures that the query only brings the most prioritary record
+    public Optional<Price> loadPrice(int brandId, long productId, LocalDateTime applicationDate) {
+        // Query already brings the most prioritary record (ordered + limit 1)
         return repo.findApplicable(brandId, productId, applicationDate, PageRequest.of(0, 1))
                 .stream()
                 .findFirst()
-                .map(e -> new Price(
-                        e.getBrand().getId(),
-                        e.getProductId(),
-                        e.getPriceList(),
-                        e.getPriority(),
-                        e.getPrice(),
-                        e.getCurr(),
-                        e.getStartDate(),
-                        e.getEndDate()))
-                .map(List::of)
-                .orElseGet(List::of);
+                .map(mapper::toDomain);
     }
 }

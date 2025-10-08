@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.inditex.inditex_iot_backend.adapter.in.web.dto.PriceResponse;
-import com.inditex.inditex_iot_backend.adapter.in.web.mapper.PriceDtoMapper;
+import com.inditex.inditex_iot_backend.adapter.in.web.mapper.PriceResponseMapper;
 import com.inditex.inditex_iot_backend.domain.port.in.GetApplicablePriceUseCase;
 
 import jakarta.validation.constraints.Min;
@@ -22,9 +22,9 @@ import jakarta.validation.constraints.Min;
 public class PricingController {
 
     private final GetApplicablePriceUseCase useCase;
-    private final PriceDtoMapper mapper;
+    private final PriceResponseMapper mapper;
 
-    public PricingController(GetApplicablePriceUseCase useCase, PriceDtoMapper mapper) {
+    public PricingController(GetApplicablePriceUseCase useCase, PriceResponseMapper mapper) {
         this.useCase = useCase;
         this.mapper = mapper;
     }
