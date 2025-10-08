@@ -12,6 +12,7 @@ spring:
       hibernate:
         format_sql: true
     defer-datasource-initialization: true # <-- this is to ensure that data.sql is executed after the table is created
+    open-in-view: false # ✅ Disable OSIV to prevent lazy loading in views
   h2:
     console:
       enabled: true
