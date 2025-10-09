@@ -6,14 +6,15 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class PriceDtoMapper implements PriceResponseMapper {
-    public PriceResponse toResponse(Price p) {
-        return new PriceResponse(
-                p.getProductId(),
-                p.getBrandId(),
-                p.getPriceList(),
-                p.getStartDate(),
-                p.getEndDate(),
-                p.getAmount(),
-                p.getCurrency());
-    }
+  @Override
+  public PriceResponse toResponse(Price p) {
+    return new PriceResponse(
+        p.getProductId(),
+        p.getBrandId(),
+        p.getPriceList(),
+        p.getStartDate(),
+        p.getEndDate(),
+        p.getAmount(),
+        p.getCurrency());
+  }
 }

@@ -5,9 +5,8 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 /**
- * Input port: define which external operations
- * Could be requested by the system regarding prices.
+ * Input port: define which external operations Could be requested by the system regarding prices.
  */
 public interface GetApplicablePriceUseCase {
-    Optional<Price> getApplicablePrice(int brandId, long productId, LocalDateTime applicationDate);
+  Optional<Price> getApplicablePrice(int brandId, long productId, LocalDateTime applicationDate);
 }
