@@ -7,5 +7,5 @@ import com.inditex.inditex_iot_backend.domain.model.Price;
  * Output port: how the domain maps the JPA entities to domain models.
  */
 public interface EntityToDomainMapper {
-    Price toDomain(PriceJpaEntity entity);
+  Price toDomain(PriceJpaEntity entity);
 }
