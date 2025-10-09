@@ -211,6 +211,26 @@ spring:
 
 ---
 
+## Format (Google Java Format via Spotless)
+- **Apply format to all files**
+```
+mvn spotless:apply
+```
+- **Check format (no changes)**
+```
+mvn spotless:check
+```
+
+## Full strict build (compile + tests + coverage + checks)
+```
+mvn -B clean spotless:check verify
+```
+This runs:
+- Spotless format check
+- Strict compiler checks (`-Xlint:all -Werror -Xlint:-processing`)
+- Unit + integration tests (Surefire + Failsafe)
+- JaCoCo coverage check (min 80% lines, 70% branches)
+
 ## Testing
 
 Este proyecto separa **unit tests** y **integration tests** mediante Surefire/Failsafe.
